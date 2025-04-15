@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -55,6 +56,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->role === 'admin'; // تأكد من وجود حقل role في جدول users
+        return $this->role === 'admin';  // تأكد من أن قيمة role هي 'admin'
     }
+    
 }

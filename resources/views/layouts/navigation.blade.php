@@ -58,6 +58,60 @@
             </div>
         </div>
     </div>
+<!--  -->
+
+<!-- Notificationsب-->
+<div x-data="{ open: false }" class="relative ml-3">
+    <button @click="open = !open" class="relative p-1 text-gray-400 hover:text-gray-500">
+        <i class="fas fa-bell text-xl"></i>
+        @if(auth()->user()->unreadNotifications->count())
+            <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400"></span>
+        @endif
+    </button>
+
+    <div 
+        x-show="open" 
+        @click.away="open = false" 
+        class="absolute right-0 mt-2 w-72 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50"
+        x-cloak
+    >
+        <div class="py-1">
+            <div class="px-4 py-2 border-b border-gray-100">
+                <h3 class="text-sm font-medium text-gray-900">Notifications</h3>
+            </div>
+            
+            @forelse(auth()->user()->unreadNotifications as $notification)
+                <a 
+                    href="{{ $notification->data['url'] }}" 
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-b border-gray-100"
+                    wire:click.prevent="markAsRead('{{ $notification->id }}')"
+                >
+                    <p>{{ $notification->data['message'] }}</p>
+                    <p class="text-xs text-gray-500 mt-1">
+                        {{ $notification->created_at->diffForHumans() }}
+                    </p>
+                </a>
+            @empty
+                <div class="px-4 py-2 text-sm text-gray-500">
+                    No new notifications
+                </div>
+            @endforelse
+            
+            @if(auth()->user()->unreadNotifications->count())
+                <div class="px-4 py-2 border-t border-gray-100">
+                    <button 
+                        wire:click="markAllAsRead"
+                        class="text-xs text-blue-600 hover:text-blue-800"
+                    >
+                        Mark all as read
+                    </button>
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
+<!-- end notifiction -->
+
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">

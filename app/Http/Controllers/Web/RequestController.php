@@ -5,16 +5,25 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequestRequest;
 use App\Http\Requests\UpdateRequestRequest;
-use App\Models\Request;
+use App\Models\Request as SupportRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class RequestController extends Controller
 {
-    public function index(): View
-    {
-        return view('requests.index');
+   public function index(): View
+{
+    if (auth()->user()->isAdmin()) {
+        // إذا كان المستخدم ادمن، عرض جميع الطلبات
+        $requests = SupportRequest::all();
+    } else {
+        // إذا كان المستخدم عادي، عرض طلباته فقط
+        $requests = auth()->user()->requests; // assuming there is a relationship defined in the User model
     }
+
+    return view('requests.index', compact('requests'));
+}
+
 
     public function create(): View
     {
@@ -26,27 +35,27 @@ class RequestController extends Controller
         $validated = $request->validated();
         $validated['user_id'] = auth()->id();
 
-        Request::create($validated);
+        SupportRequest::create($validated);
 
         return redirect()->route('requests.index')
             ->with('success', 'Request created successfully.');
     }
 
-    public function show(Request $request): View
+    public function show(SupportRequest $request): View
     {
         $this->authorize('view', $request);
 
         return view('requests.show', compact('request'));
     }
 
-    public function edit(Request $request): View
+    public function edit(SupportRequest $request): View
     {
         $this->authorize('update', $request);
 
         return view('requests.edit', compact('request'));
     }
 
-    public function update(UpdateRequestRequest $request, Request $requestModel): RedirectResponse
+    public function update(UpdateRequestRequest $request, SupportRequest $requestModel)
     {
         $requestModel->update($request->validated());
 
@@ -54,7 +63,7 @@ class RequestController extends Controller
             ->with('success', 'Request updated successfully.');
     }
 
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(SupportRequest $request): RedirectResponse
     {
         $this->authorize('delete', $request);
 

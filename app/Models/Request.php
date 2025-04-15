@@ -40,4 +40,9 @@ class Request extends Model
             'completed' => 'bg-green-100 text-green-800',
         ][$this->status];
     }
+
+    public function attachments()
+{
+    return $this->hasMany(Attachment::class);
+}
 }
