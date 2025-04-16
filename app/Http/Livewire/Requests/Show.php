@@ -30,30 +30,14 @@ class Show extends Component
         $this->request = $request;
     }
 
-    public function addComment()
-    {
-        $validated = $this->validate([
-            'comment' => 'required|string|max:1000',
-        ]);
+   
 
-        Comment::create([
-            'content' => $validated['comment'],
-            'request_id' => $this->request->id,
-            'user_id' => auth()->id(),
-        ]);
 
-        $this->comment = '';
-        $this->emitSelf('refreshRequest');
-        $this->dispatchBrowserEvent('notify', 'Comment added successfully!');
-    }
+    // تعديل الحالات من قبل الادمن 
 
     public function updateStatus($status)
     {
-        // Gate::authorize('changeStatus', $this->request);
-
-        // $this->request->update(['status' => $status]);
-        // $this->emitSelf('refreshRequest');
-        // $this->dispatchBrowserEvent('notify', 'Status updated successfully!');
+       
 
 
         Gate::authorize('changeStatus', $this->request);
@@ -83,50 +67,49 @@ class Show extends Component
 
 
     // attchment
-    public function addAttachments()
-    {
-        $this->validate([
-            'attachments' => 'sometimes|array|max:5',
-            'attachments.*' => 'file|max:5120', // 5MB
-        ]);
+    // public function addAttachments()
+    // {
+    //     $this->validate([
+    //         'attachments' => 'sometimes|array|max:5',
+    //         'attachments.*' => 'file|max:5120', // 5MB
+    //     ]);
 
-        foreach ($this->attachments as $file) {
-            $path = $file->store('attachments/' . $this->request->id);
+    //     foreach ($this->attachments as $file) {
+    //         $path = $file->store('attachments/' . $this->request->id);
 
-            Attachment::create([
-                'original_name' => $file->getClientOriginalName(),
-                'path' => $path,
-                'mime_type' => $file->getMimeType(),
-                'size' => $file->getSize(),
-                'request_id' => $this->request->id,
-                'user_id' => auth()->id(),
-            ]);
-        }
+    //         Attachment::create([
+    //             'original_name' => $file->getClientOriginalName(),
+    //             'path' => $path,
+    //             'mime_type' => $file->getMimeType(),
+    //             'size' => $file->getSize(),
+    //             'request_id' => $this->request->id,
+    //             'user_id' => auth()->id(),
+    //         ]);
+    //     }
 
-        $this->attachments = [];
-        $this->emitSelf('refreshRequest');
-        $this->dispatchBrowserEvent('notify', 'Files uploaded successfully!');
-    }
+    //     $this->attachments = [];
+    //     $this->emitSelf('refreshRequest');
+    //     $this->dispatchBrowserEvent('notify', 'Files uploaded successfully!');
+    // }
 
-    public function downloadAttachment($attachmentId)
-    {
-        $attachment = Attachment::findOrFail($attachmentId);
-        return Storage::download($attachment->path, $attachment->original_name);
-    }
+    // public function downloadAttachment($attachmentId)
+    // {
+    //     $attachment = Attachment::findOrFail($attachmentId);
+    //     return Storage::download($attachment->path, $attachment->original_name);
+    // }
 
-    public function deleteAttachment($attachmentId)
-    {
-        $attachment = Attachment::findOrFail($attachmentId);
+    // public function deleteAttachment($attachmentId)
+    // {
+    //     $attachment = Attachment::findOrFail($attachmentId);
         
-        Storage::delete($attachment->path);
-        $attachment->delete();
+    //     Storage::delete($attachment->path);
+    //     $attachment->delete();
 
-        $this->emitSelf('refreshRequest');
-        $this->dispatchBrowserEvent('notify', 'File deleted successfully!');
-    }
+    //     $this->emitSelf('refreshRequest');
+    //     $this->dispatchBrowserEvent('notify', 'File deleted successfully!');
+    // }
 
 
-    // notifiction
 
 
     

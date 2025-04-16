@@ -12,7 +12,7 @@
                 @include('components.alert-validation')
                 <form method="POST" action="{{ route('requests.update', $request) }}">
                         @csrf
-                        @method('PATCH')
+                        <!-- @method('PATCH') -->
 
                         <div class="mb-4">
                             <label for="title" class="block text-sm font-medium text-gray-700">Title</label>

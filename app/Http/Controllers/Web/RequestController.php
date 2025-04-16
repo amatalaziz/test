@@ -11,6 +11,9 @@ use Illuminate\View\View;
 
 class RequestController extends Controller
 {
+
+
+    
    public function index(): View
 {
     if (auth()->user()->isAdmin()) {
