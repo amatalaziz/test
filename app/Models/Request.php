@@ -45,4 +45,20 @@ class Request extends Model
 {
     return $this->hasMany(Attachment::class);
 }
+
+// approvals
+public function workflow()
+{
+    return $this->belongsTo(ApprovalWorkflow::class, 'approval_workflow_id');
+}
+
+public function currentApprovalStep()
+{
+    return $this->belongsTo(ApprovalStep::class, 'current_approval_step_id');
+}
+
+public function approvals()
+{
+    return $this->hasMany(RequestApproval::class);
+}
 }

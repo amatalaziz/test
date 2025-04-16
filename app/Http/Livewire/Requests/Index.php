@@ -46,7 +46,7 @@ class Index extends Component
 
     public function render()
     {
-        $requests = Request::query()
+           $requests = Request::query()
         ->when(!auth()->user()->isAdmin(), function ($query) {
             $query->where('user_id', auth()->id());
         })
@@ -60,6 +60,8 @@ class Index extends Component
             'requests' => $requests,
             'priorities' => RequestPriority::cases(),
             'statuses' => RequestStatus::cases(),
+      
+         
         ]);
     }
 }

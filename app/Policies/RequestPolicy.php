@@ -44,5 +44,11 @@ class RequestPolicy
         return $user->isAdmin();
     }
 
+// polcy for approve
+    public function approve(User $user, Request $request)
+{
+    $currentApproval = $request->currentApproval();
+    return $currentApproval && $currentApproval->user_id === $user->id;
+}
  
 }
