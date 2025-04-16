@@ -29,10 +29,27 @@ Route::get('/', function () {
 
 
 
+// تأكد من استيراد الـ middleware اللازمة إذا كنت تستخدمها
+// Route::middleware(['auth', 'verified'])->group(function () {
+//     // Routes لطلبات الدعم
+//     Route::prefix('requests')->name('requests.')->group(function () {
+//         Route::get('/', [RequestController::class, 'index'])->name('index');
+//         Route::get('/create', [RequestController::class, 'create'])->name('create');
+//         Route::post('/', [RequestController::class, 'store'])->name('store');
+        
+//         // Routes تحتوي على نموذج Request
+//         Route::prefix('{request}')->group(function () {
+//             Route::get('/', [RequestController::class, 'show'])->name('show');
+//             Route::get('/edit', [RequestController::class, 'edit'])->name('edit');
+//             Route::PATCH('/', [RequestController::class, 'update'])->name('update');
+//             Route::delete('/', [RequestController::class, 'destroy'])->name('destroy');
+//         });
+//     });
+// });
 // قثضعسثف
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('requests', RequestController::class)->except(['update']);
-    Route::post('requests/{request}', [RequestController::class, 'update'])->name('requests.update');
+    Route::resource('requests', RequestController::class);
+    // Route::post('requests/{request}', [RequestController::class, 'update'])->name('requests.update');
 });
 
 

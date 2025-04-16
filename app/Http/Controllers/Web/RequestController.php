@@ -16,13 +16,11 @@ class RequestController extends Controller
     
    public function index(): View
 {
-    if (auth()->user()->isAdmin()) {
-        // إذا كان المستخدم ادمن، عرض جميع الطلبات
-        $requests = SupportRequest::all();
-    } else {
-        // إذا كان المستخدم عادي، عرض طلباته فقط
-        $requests = auth()->user()->requests; // assuming there is a relationship defined in the User model
-    }
+    
+    $requests = auth()->user()->isAdmin()
+    ? SupportRequest::all()
+    : SupportRequest::where('user_id', auth()->id())->get();
+
 
     return view('requests.index', compact('requests'));
 }
@@ -51,6 +49,8 @@ class RequestController extends Controller
         return view('requests.show', compact('request'));
     }
 
+    
+
     public function edit(SupportRequest $request): View
     {
         $this->authorize('update', $request);
@@ -58,13 +58,19 @@ class RequestController extends Controller
         return view('requests.edit', compact('request'));
     }
 
-    public function update(UpdateRequestRequest $request, SupportRequest $requestModel)
-    {
-        $requestModel->update($request->validated());
 
-        return redirect()->route('requests.show', $requestModel)
+
+
+    public function update(UpdateRequestRequest $urequest, SupportRequest $request)
+    {
+        $request->update($urequest->validated());
+
+        return redirect()->route('requests.index', $request)
             ->with('success', 'Request updated successfully.');
     }
+
+
+
 
     public function destroy(SupportRequest $request): RedirectResponse
     {

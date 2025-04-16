@@ -47,6 +47,9 @@ class Index extends Component
     public function render()
     {
         $requests = Request::query()
+        ->when(!auth()->user()->isAdmin(), function ($query) {
+            $query->where('user_id', auth()->id());
+        })
             ->when($this->search, fn ($query) => $query->where('title', 'like', '%'.$this->search.'%'))
             ->when($this->priority, fn ($query) => $query->where('priority', $this->priority))
             ->when($this->status, fn ($query) => $query->where('status', $this->status))

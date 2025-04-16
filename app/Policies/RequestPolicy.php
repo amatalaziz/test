@@ -12,11 +12,13 @@ class RequestPolicy
 
     public function viewAny(User $user)
     {
-        return true;
+    
+        return $user->isAdmin();
     }
-
+    
     public function view(User $user, SupportRequest $request)
     {
+   
         return $user->id === $request->user_id || $user->isAdmin();
     }
 
@@ -27,7 +29,7 @@ class RequestPolicy
 
     public function update(User $user, SupportRequest $request)
     {
-        return $user->id === $request->user_id || $user->isAdmin();
+        return $user->id === $request->user_id ;
     }
 
     

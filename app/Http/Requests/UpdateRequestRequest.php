@@ -8,11 +8,15 @@ use App\Enums\RequestStatus;
 
 class UpdateRequestRequest extends FormRequest
 {
-    public function authorize()
+   
+   
+    
+    public function authorize(): bool
     {
-        return $this->user()->can('update', $this->request);
-    }
+                    //     return $this->user()->can('update', $this->request);
 
+        return true;
+    }
     public function rules()
     {
         return [

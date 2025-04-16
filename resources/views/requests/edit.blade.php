@@ -12,7 +12,7 @@
                 @include('components.alert-validation')
                 <form method="POST" action="{{ route('requests.update', $request) }}">
                         @csrf
-                        <!-- @method('PATCH') -->
+                        @method('PATCH')
 
                         <div class="mb-4">
                             <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
@@ -56,7 +56,7 @@
                             </div>
                         @endcan
         
-   @can('update', $request)
+
                         <div class="flex items-center justify-end">
                             <a href="{{ route('requests.index') }}" class="mr-4 inline-flex items-center px-4 py-2 bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-300 active:bg-gray-300 focus:outline-none focus:border-gray-300 focus:ring focus:ring-gray-200 disabled:opacity-25 transition">
                                 Cancel
@@ -64,7 +64,7 @@
                             <button type="submit" class="inline-flex items-center px-4 py-2 btn btn-dark border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 disabled:opacity-25 transition">
                                 Update Request
                             </button>
-                            @endcan 
+                            
                         </div>
                     </form>
                 </div>
